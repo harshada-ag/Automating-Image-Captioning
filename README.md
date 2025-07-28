@@ -37,7 +37,7 @@ Whenever a new image is saved to the `to_process/` folder:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/anuragpathak27/Automating-Image-Captioning-using-BLIP-and-n8n.git
+git clone https://github.com/harshada-ag/Automating-Image-Captioning.git
 cd Automating-Image-Captioning-using-BLIP-and-n8n
 ```
 
@@ -88,8 +88,4 @@ Then open http://localhost:5678 in your browser.
    - ngrok BLIP API endpoint
    - Google Sheet ID and column mappings
 
-### 📜 License
-This project is open source and available under the MIT License.
 
-### Author 
-Anurag Pathak
