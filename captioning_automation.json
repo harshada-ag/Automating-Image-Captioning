@@ -1,0 +1,176 @@
+{
+  "name": "captioning automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cd5c4a1c-aa0e-45ce-bbe2-7441bf0568d4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6c355d73-c0d5-4207-9687-c88692ba009a",
+      "name": "Webhook",
+      "webhookId": "cd5c4a1c-aa0e-45ce-bbe2-7441bf0568d4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://559a-35-187-236-84.ngrok-free.app/caption",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "6e5727c9-259d-4b30-95bf-b3e27f36691d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:5050/move",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"image_path\": \"D:\\\\\\\\KMITL Intership\\\\\\\\Captioning automation\\\\\\\\to_process\\\\\\\\{{ $('Webhook').item.binary.image.fileName }}\",\n  \"caption\": \"{{ $('HTTP Request').item.json.caption }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        0
+      ],
+      "id": "c662d17f-c7f8-4f0c-ab8d-2781e8ed8776",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1UP36JEzieP8sNsPHUfn7eXm2mWuHRyqmjrVML4lEEyo",
+          "mode": "list",
+          "cachedResultName": "Captioning Automation Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UP36JEzieP8sNsPHUfn7eXm2mWuHRyqmjrVML4lEEyo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UP36JEzieP8sNsPHUfn7eXm2mWuHRyqmjrVML4lEEyo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Image Path": "=D:\\\\KMITL Intership\\\\Captioning automation\\\\to_process\\\\{{ $('Webhook').item.binary.image.fileName }}",
+            "Caption": "={{ $json.caption }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Image Path",
+              "displayName": "Image Path",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Caption",
+              "displayName": "Caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        440,
+        0
+      ],
+      "id": "bb75f117-3038-4bf4-b3ce-6f8d0d027a95",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "aI5h4hcXBOGc2UDc",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "03d50a3a-113e-479c-af2a-5be70efbb6e7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2c1a5cba2e5a91de7120809571a73b80a77a63993cb237b877f48a87141bbb43"
+  },
+  "id": "6RaMrxZGHvQrW7OV",
+  "tags": []
+}
